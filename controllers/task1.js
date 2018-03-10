@@ -9,13 +9,13 @@ var normalizeUrl = require('normalize-url');
 
 const get =  function(req,resp,title_array){
             if (req.query.address) {
-            let inputData = "";
+            let addresses = "";
                 if (req.query.address instanceof Array) {
-                    inputData = req.query.address;
+                    addresses = req.query.address;
                 } else {
-                    inputData = [req.query.address];
+                    addresses = [req.query.address];
                 }
-                inputData.forEach(element => {
+                addresses.forEach(element => {
                     scrapeTitle(normalizeUrl(element),title_array,resp);
                 });
             }
@@ -29,19 +29,25 @@ function scrapeTitle(urlToScrape,title_array,res){
         url: urlToScrape
     }, function(err, response, body) {
         // in case of error, return the error
-        if (err) return console.error(err);
+        if (err) { title_array.push(err); return console.error(err);}
         // Tell Cheerio to load the HTML page for scraping the title
-        $ = cheerio.load(body);
-        const scrapedTitle = $('head > title').text()
-        title_array.push(scrapedTitle);
-        console.log(title_array);
+        try{
+            $ = cheerio.load(body);
+            const scrapedTitle = $('head > title').text().toString();
+            title_array.push(scrapedTitle);
+            console.log(scrapedTitle);
+        }
+        catch(error){
+            title_array.push({urlToScrape : error.message});
+            console.log(error.message);
+        }
     });
     // render response, the titles of the addresses query.
     setTimeout(function(){
         res.render('index/index', {
         title: " Following are the titles of given websites:",
         scrapedTitles:  title_array
-      }); }, 2000);
+      }); }, 2500);
 }
 
 module.exports.usingCallback = get;
