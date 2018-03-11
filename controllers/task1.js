@@ -20,7 +20,7 @@ function scrapeTitle(urlToScrape,titles,callback){
         url: urlToScrape
     }, function(err, response, body) {
         // in case of error, return the error
-        if (err) { titles[urlToScrape]=err.message; return console.error(err.message);}
+        if (err) {  return console.error(err.message);}
         // Tell Cheerio to load the HTML page for scraping the title
             $ = cheerio.load(body);
             const scrapedTitle = $('head > title').text().toString();
@@ -31,6 +31,7 @@ function scrapeTitle(urlToScrape,titles,callback){
     scrapeRequest.on('error', function (err) {
         if(err.code === "ENOTFOUND")
             titles[urlToScrape] = "NO RESPONSE";
+        console.error(err);
     });
 }
 
