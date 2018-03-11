@@ -31,10 +31,10 @@ router.get('/I/want/title', function(req, res) {
   // });
 
   //Task 2
-  // task2.usingAsync(req,res,addresses);
+  task2.usingAsync(addresses,res);
 
   // Task3
-  task3.usingPromise(addresses,res);
+  // task3.usingPromise(addresses,res);
 
 });
 // Get for any other route besides I/want/title
