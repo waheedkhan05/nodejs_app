@@ -1,4 +1,7 @@
 extends ./shared/layout.pug
 
 block content
-  h1= title
+  .error-container= title
+    h1='404'
+    p.return 'Take me back to'
+        a(href='http://localhost:3000/I/want/title')='I want title'

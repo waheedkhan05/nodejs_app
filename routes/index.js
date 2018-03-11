@@ -7,27 +7,18 @@ var router = express.Router();
 
 // GET: /
 router.get('/I/want/title', function(req, res) {
-  let results = [];
-  let addresses = req.query.address
-  if (!addresses instanceof Array) {
-	    addresses = [addresses];
+  
+  const type = req.query.type
+
+  if(!type || type == 1) {
+    task1.getTitles(req, res);
   }
-  // Task1
-  // task1.usingCallback(addresses,results,function(){
-  //   // comparing results and addresses to make sure all the functions have run and returned the response.
-  //   if (Object.keys(results).length == addresses.length){
-  //     res.render('index/index', {
-  //         title: " Following are the titles of given websites:",
-  //         scrapedTitles:  results
-  //     });
-  //   }
-  // });
-
-  //Task 2
-  // task2.usingAsync(addresses,res);
-
-  // Task3
-  task3.usingPromise(addresses,res);
+  else if(type == 2) {
+    task2.getTitles(req, res);
+  }
+  else if(type == 3) {
+    task3.getTitles(req, res);
+  }
 
 });
 // Get for any other route besides I/want/title

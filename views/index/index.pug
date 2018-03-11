@@ -1,8 +1,9 @@
 extends ../shared/layout.pug
 
 block content
-  h1= title
+  h2= title
 
-  ul
+  ol.list-type1
     for obj, index in scrapedTitles
-      li=obj.url+" : "+obj.title
+      li
+        a(href=obj.url)=obj.url+" : "+obj.title
