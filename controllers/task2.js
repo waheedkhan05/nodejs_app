@@ -10,28 +10,45 @@ var task2 = function(addresses,resp){
                 scrapeTitleForTask2(element,callback)
         });
         // function_stack is array of functions
-        async.parallel(function_stack, function(err,results  ) {
-            console.log(results);
-                if (err) {  console.error(err);}
-                  resp.render('index/index', {
+        async.parallel(function_stack, function(err,results,address) {
+            // console.log(results);
+            if (err) { 
+                console.error(err);
+            }
+            if(addresses.length == Object.keys(results).length){
+                console.log(results);
+                resp.render('index/index', {
                     title: " Following are the titles of given websites:",
                     scrapedTitles:  results
-                  });
-              });
+                });
+            } 
+        });
 });
 }
 var scrapeTitleForTask2 = function(element,callback){
     request({
-    method: 'GET',
-    url: normalizeUrl(element)
-}, function(err, response, body) {
-    // in case of error, return the error
-    if (err) { console.log(err);callback(null,err.message)}
-    // Tell Cheerio to load the HTML page for scraping the title
+        method: 'GET',
+        url: normalizeUrl(element)
+    }, function(err, response, body) {
+        let text = "";
+        if (err) { 
+            console.log(err);
+            if(err.code == "ENOTFOUND"){
+                 text = "NO RESPONSE"
+            }
+            else{
+                 text = err.message
+            }
+        }
+        else{
+            $ = cheerio.load(body);
+             text = $('head > title').text();
+        }
 
-    $ = cheerio.load(body);
-    const scrapedTitle = $('head > title').text();
-    callback(null,scrapedTitle);
-});
+        callback(null,{
+            url: element,
+            title: text
+        });
+    });
 }
 module.exports.usingAsync = task2;

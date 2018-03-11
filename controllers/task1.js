@@ -20,18 +20,19 @@ function scrapeTitle(urlToScrape,titles,callback){
         url: urlToScrape
     }, function(err, response, body) {
         // in case of error, return the error
-        if (err) {  return console.error(err.message);}
-        // Tell Cheerio to load the HTML page for scraping the title
+        if (err) 
+        {  
+            if(err.code === "ENOTFOUND")
+                titles.push({url:urlToScrape,title:"NO RESPONSE"});
+            console.error(err);
+        }
+        else{
+            // Tell Cheerio to load the HTML page for scraping the title
             $ = cheerio.load(body);
             const scrapedTitle = $('head > title').text().toString();
-            titles[urlToScrape] = scrapedTitle;
+            titles.push({'url':urlToScrape,'title': scrapedTitle});
             callback(titles);
-        
-    });
-    scrapeRequest.on('error', function (err) {
-        if(err.code === "ENOTFOUND")
-            titles[urlToScrape] = "NO RESPONSE";
-        console.error(err);
+        }
     });
 }
 

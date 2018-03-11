@@ -7,9 +7,8 @@ var router = express.Router();
 
 // GET: /
 router.get('/I/want/title', function(req, res) {
-  let results = {};
-  let addresses = [];
-  addresses = req.query.address
+  let results = [];
+  let addresses = req.query.address
   if (!addresses instanceof Array) {
 	    addresses = [addresses];
   }
@@ -25,10 +24,10 @@ router.get('/I/want/title', function(req, res) {
   // });
 
   //Task 2
-  task2.usingAsync(addresses,res);
+  // task2.usingAsync(addresses,res);
 
   // Task3
-  // task3.usingPromise(addresses,res);
+  task3.usingPromise(addresses,res);
 
 });
 // Get for any other route besides I/want/title

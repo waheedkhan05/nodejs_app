@@ -4,5 +4,5 @@ block content
   h1= title
 
   ul
-    for tit, address in scrapedTitles
-      li=address+" : "+tit
+    for obj, index in scrapedTitles
+      li=obj.url+" : "+obj.title
