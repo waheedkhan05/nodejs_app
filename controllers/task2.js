@@ -8,7 +8,14 @@ module.exports = {
         const me = this;
         let function_stack = [];
         let addresses = req.query.address;
-        if (!addresses instanceof Array) {
+        if(addresses == null || addresses.length <= 0){
+            resp.render('index/index', {
+                title: " No Addresses",
+                scrapedTitles:  []
+            });
+            return;
+        }
+        if (typeof addresses == 'string') {
             addresses = [addresses];
         };
         addresses.forEach(element => {

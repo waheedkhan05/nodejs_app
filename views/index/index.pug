@@ -7,3 +7,5 @@ block content
     for obj, index in scrapedTitles
       li
         a(href=obj.url)=obj.url+" : "+obj.title
+    else
+      p Sorry, no address parameter(s) were provided in the url!

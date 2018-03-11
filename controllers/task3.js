@@ -6,7 +6,14 @@ const request = require("request");
 module.exports = {
     getTitles: function(req, res){
         let addresses = req.query.address;
-        if (!addresses instanceof Array) {
+        if(addresses == null || addresses.length <= 0){
+            res.render('index/index', {
+                title: " No Addresses",
+                scrapedTitles:  []
+            });
+            return;
+        }
+        if (typeof addresses == 'string') {
             addresses = [addresses];
         };
         var webRequests = addresses.map(function(address) {

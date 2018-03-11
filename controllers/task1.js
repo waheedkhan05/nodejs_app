@@ -7,10 +7,16 @@ module.exports = {
     getTitles: function(req, res){
         let titles = [];
         let addresses = req.query.address;
-        if (!addresses instanceof Array) {
+        if(addresses == null || addresses.length <= 0){
+            res.render('index/index', {
+                title: " No Addresses",
+                scrapedTitles:  []
+            });
+            return;
+        }
+        if (typeof addresses == 'string') {
             addresses = [addresses];
         };
-
         let callback = function(){
             if (Object.keys(titles).length == addresses.length){
                 res.render('index/index', {
