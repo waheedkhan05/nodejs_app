@@ -7,22 +7,16 @@ var router = express.Router();
 
 // GET: /
 router.get('/I/want/title', function(req, res) {
-  let titles = [];
+  let results = {};
   let addresses = [];
   addresses = req.query.address
   if (!addresses instanceof Array) {
 	    addresses = [addresses];
   }
   // Task1
-  // task1.usingCallback(addresses,titles,function(){
-  //   // comparing titles and addresses to make sure all the functions have run and returned the response.
-  //   if (titles.length == addresses.length){
-  //     // transforming results in the required format
-  //     let results = {};
-  //     for (let i = 0; i < titles.length; i++) {
-  //       results[addresses[i]] = titles[i];
-  //     }
-  //     console.log(results);
+  // task1.usingCallback(addresses,results,function(){
+  //   // comparing results and addresses to make sure all the functions have run and returned the response.
+  //   if (Object.keys(results).length == addresses.length){
   //     res.render('index/index', {
   //         title: " Following are the titles of given websites:",
   //         scrapedTitles:  results

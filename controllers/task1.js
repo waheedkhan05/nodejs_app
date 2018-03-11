@@ -6,7 +6,8 @@ var normalizeUrl = require('normalize-url');
 // the callbacks run at different times. To make sure our response is rendered with complete list of url 
 // titles I am comparing addresses and titles. When they are the same I am rendering.
 
-const get =  function(addresses, titles, callback){
+
+const task1 =  function(addresses, titles, callback){
                 addresses.forEach(element => {
                     scrapeTitle(normalizeUrl(element),titles,callback);
                 });
@@ -14,26 +15,23 @@ const get =  function(addresses, titles, callback){
 
 
 function scrapeTitle(urlToScrape,titles,callback){
-    request({
+    var scrapeRequest = request({
         method: 'GET',
         url: urlToScrape
     }, function(err, response, body) {
         // in case of error, return the error
-        if (err) { titles.push(err.message); return console.error(err.message);}
+        if (err) { titles[urlToScrape]=err.message; return console.error(err.message);}
         // Tell Cheerio to load the HTML page for scraping the title
-        try{
             $ = cheerio.load(body);
             const scrapedTitle = $('head > title').text().toString();
-            titles.push(scrapedTitle);
-            console.log(scrapedTitle);
-            callback();
-        }
-        catch(error){
-            console.error(error.message);
-            titles.push(error);
-            callback();
-        }
+            titles[urlToScrape] = scrapedTitle;
+            callback(titles);
+        
+    });
+    scrapeRequest.on('error', function (err) {
+        if(err.code === "ENOTFOUND")
+            titles[urlToScrape] = "NO RESPONSE";
     });
 }
 
-module.exports.usingCallback = get;
+module.exports.usingCallback = task1;
